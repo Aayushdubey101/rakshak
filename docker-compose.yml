@@ -1,0 +1,189 @@
+# Local dev infra for phase 7, plus the app itself (phase 15's "docker
+# compose up gives a full local stack" done-when). Nothing here is required
+# to run the test suite -- tests use aiosqlite/fakeredis/local-filesystem
+# doubles so the zero-network convention from phase 0 holds. `api`/`worker`
+# read `.env` for provider/channel keys and get DATABASE_URL/REDIS_URL/S3_*
+# pre-wired to the services below; copy `.env.example` to `.env` first.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rakshak
+      POSTGRES_PASSWORD: rakshak
+      POSTGRES_DB: rakshak
+    # No host port publish -- only api/worker (same compose network) talk to
+    # this. Publishing 5432 on a public EC2 host exposes it to the internet
+    # unless a security group happens to block it; the network already gives
+    # every other service DNS access via the `postgres` hostname.
+    volumes:
+      - rakshak_postgres:/var/lib/postgresql/data
+      - ./infra/docker/init-pgvector.sql:/docker-entrypoint-initdb.d/init-pgvector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rakshak"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - rakshak_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: rakshak
+      MINIO_ROOT_PASSWORD: rakshak123
+    volumes:
+      - rakshak_minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-shot: creates the evidence bucket on a fresh MinIO volume, then
+  # exits. `api`'s upload endpoint is the first real caller of
+  # ObjectStore.put() (task.md phase 7 flagged "nothing calls put() yet") --
+  # without this, that call 500s with NoSuchBucket on a clean `docker compose
+  # up`, since MinIO (unlike real S3 buckets provisioned by Terraform) starts
+  # with no buckets at all.
+  minio-init:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 rakshak rakshak123 &&
+      mc mb --ignore-existing local/rakshak-evidence
+      "
+
+  api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.api
+      args:
+        INSTALL_ML: "false"
+        INSTALL_SEMANTIC: "true"
+        INSTALL_OCR: "true"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://rakshak:rakshak@postgres:5432/rakshak
+      REDIS_URL: redis://redis:6379/0
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_ACCESS_KEY: rakshak
+      S3_SECRET_KEY: rakshak123
+      S3_BUCKET: rakshak-evidence
+      DEPLOYMENT_MODE: lite
+      HF_LITE_MODE: "true"
+      # Ollama, if enabled in .env, runs on the host, not in this compose
+      # network -- host.docker.internal reaches it from inside the container
+      # (localhost inside a container means the container itself).
+      OLLAMA_BASE_URL: http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # No host port publish -- caddy (below) reverse-proxies to `api:10000`
+    # over the compose network and terminates TLS; the app never needs to
+    # speak plaintext HTTP to the public internet directly.
+    volumes:
+      # EasyOCR's ~64MB model weights (packages/ml/vision/ocr.py) live in the
+      # container's writable layer by default -- gone on every `up`/rebuild,
+      # forcing a ~90s redownload that blows past the 18s ingestion
+      # StageBudget and makes the first request or two after any restart
+      # silently degrade to "no text extracted" (0 risk_score).
+      - rakshak_easyocr:/app/.EasyOCR
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+
+  web:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web
+      args:
+        # Baked in at build time (Next.js inlines NEXT_PUBLIC_* into the
+        # client bundle) -- the browser calls this URL directly, so it must
+        # be caddy's public HTTPS address for the api, not the
+        # compose-internal service name. Set NEXT_PUBLIC_API_URL in .env
+        # (e.g. https://rakshak-ai.duckdns.org:8443) before building there;
+        # localhost only works for local dev.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:10000}
+    # No host port publish -- caddy reverse-proxies to `web:3000`.
+    depends_on:
+      - api
+
+  worker:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.worker
+      args:
+        INSTALL_ML: "false"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://rakshak:rakshak@postgres:5432/rakshak
+      REDIS_URL: redis://redis:6379/0
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_ACCESS_KEY: rakshak
+      S3_SECRET_KEY: rakshak123
+      S3_BUCKET: rakshak-evidence
+      DEPLOYMENT_MODE: lite
+      HF_LITE_MODE: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+
+  # Reverse proxy + automatic Let's Encrypt TLS (infra/docker/Caddyfile).
+  # web gets the standard 443 (rakshak-ai.duckdns.org); api gets 8443 on the
+  # same hostname, split by port rather than URL path because /investigations
+  # and /threat-intel exist as both a Next.js page (apps/web/src/app) and an
+  # API route (apps/api/routers) -- a single port with path-based routing
+  # would collide on those two.
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8443:8443"
+    volumes:
+      - ./infra/docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+      - api
+
+volumes:
+  rakshak_postgres:
+  rakshak_redis:
+  rakshak_minio:
+  rakshak_easyocr:
+  caddy_data:
+  caddy_config:

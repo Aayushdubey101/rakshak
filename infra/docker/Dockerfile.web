@@ -1,0 +1,48 @@
+# Rakshak web frontend (apps/web, Next.js). Build from the repository root:
+#   docker build -f infra/docker/Dockerfile.web -t rakshak-web .
+#
+# NEXT_PUBLIC_API_URL is baked in at build time (Next.js inlines
+# NEXT_PUBLIC_* vars into the client bundle -- they can't be swapped at
+# container start the way a server-only env var can). Default matches
+# docker-compose.yml's `api` service port mapping.
+
+FROM node:22-slim AS builder
+
+ARG NEXT_PUBLIC_API_URL=http://localhost:10000
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
+RUN corepack enable
+
+WORKDIR /app
+
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY apps/web apps/web
+
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
+RUN pnpm --filter @rakshak/web build
+
+FROM node:22-slim
+
+RUN groupadd --system rakshak && useradd --system --gid rakshak --home /app rakshak
+
+WORKDIR /app
+
+# Next.js standalone output: a self-contained server.js plus only the
+# production dependencies actually used, not the full node_modules tree.
+COPY --from=builder --chown=rakshak:rakshak /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=rakshak:rakshak /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=rakshak:rakshak /app/apps/web/public ./apps/web/public
+
+ENV PORT=3000 \
+    HOSTNAME=0.0.0.0 \
+    NODE_ENV=production
+
+USER rakshak
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD node -e "require('http').get('http://127.0.0.1:3000/', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))" || exit 1
+
+CMD ["node", "apps/web/server.js"]

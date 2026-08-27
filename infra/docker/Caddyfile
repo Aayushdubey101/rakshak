@@ -1,0 +1,13 @@
+# Auto-HTTPS reverse proxy for the EC2 all-in-one deploy (docker-compose.yml).
+# Caddy issues and renews the Let's Encrypt cert for rakshak-ai.duckdns.org
+# itself on first boot -- no certbot, no manual cert handling. Requires
+# ports 80 (ACME HTTP-01 challenge) and 443/8443 open in the EC2 security
+# group, and the DuckDNS record pointed at the instance's public IP.
+
+rakshak-ai.duckdns.org {
+	reverse_proxy web:3000
+}
+
+rakshak-ai.duckdns.org:8443 {
+	reverse_proxy api:10000
+}
