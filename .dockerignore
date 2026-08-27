@@ -1,0 +1,21 @@
+.git
+.github
+.venv
+# Pins 3.14 for local dev; the container images build against the base
+# image's 3.11 (pyproject.toml's requires-python floor) instead.
+.python-version
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+htmlcov
+.coverage
+node_modules
+data/
+docs/
+*.md
+!README.md
+.env
+.env.*
+!.env.example
