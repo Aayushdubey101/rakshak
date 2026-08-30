@@ -1,0 +1,148 @@
+{
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "classifier": "LogisticRegression(class_weight='balanced', C=1.0)",
+  "classes": [
+    "bank_impersonation",
+    "benign",
+    "credential_access",
+    "investment_fraud",
+    "it_support_pretext",
+    "mfa_code_theft",
+    "payment_fraud",
+    "phishing",
+    "social_engineering"
+  ],
+  "training_dataset": "ml-models\\evaluation\\dev_train_set_v2.json",
+  "dataset_version": "dev_train_set_v2",
+  "n_train_examples": 1321,
+  "train_class_distribution": {
+    "credential_access": 156,
+    "social_engineering": 156,
+    "benign": 234,
+    "it_support_pretext": 117,
+    "phishing": 156,
+    "payment_fraud": 117,
+    "mfa_code_theft": 156,
+    "bank_impersonation": 117,
+    "investment_fraud": 112
+  },
+  "normalization": true,
+  "selected_threshold": 0.5,
+  "threshold_framing": "top1: predicted label's own probability, label != benign",
+  "threshold_selection_set": "ml-models\\evaluation\\threshold_validation_set.json",
+  "threshold_selection_metrics": {
+    "threshold": 0.5,
+    "tp": 287,
+    "fp": 0,
+    "tn": 66,
+    "fn": 20,
+    "precision": 1.0,
+    "recall": 0.935,
+    "f1": 0.966,
+    "fpr": 0.0,
+    "fnr": 0.065
+  },
+  "threshold_sweep": [
+    {
+      "threshold": 0.3,
+      "tp": 304,
+      "fp": 2,
+      "tn": 64,
+      "fn": 3,
+      "precision": 0.993,
+      "recall": 0.99,
+      "f1": 0.992,
+      "fpr": 0.03,
+      "fnr": 0.01
+    },
+    {
+      "threshold": 0.4,
+      "tp": 300,
+      "fp": 0,
+      "tn": 66,
+      "fn": 7,
+      "precision": 1.0,
+      "recall": 0.977,
+      "f1": 0.988,
+      "fpr": 0.0,
+      "fnr": 0.023
+    },
+    {
+      "threshold": 0.5,
+      "tp": 287,
+      "fp": 0,
+      "tn": 66,
+      "fn": 20,
+      "precision": 1.0,
+      "recall": 0.935,
+      "f1": 0.966,
+      "fpr": 0.0,
+      "fnr": 0.065
+    },
+    {
+      "threshold": 0.6,
+      "tp": 267,
+      "fp": 0,
+      "tn": 66,
+      "fn": 40,
+      "precision": 1.0,
+      "recall": 0.87,
+      "f1": 0.93,
+      "fpr": 0.0,
+      "fnr": 0.13
+    },
+    {
+      "threshold": 0.7,
+      "tp": 230,
+      "fp": 0,
+      "tn": 66,
+      "fn": 77,
+      "precision": 1.0,
+      "recall": 0.749,
+      "f1": 0.857,
+      "fpr": 0.0,
+      "fnr": 0.251
+    },
+    {
+      "threshold": 0.8,
+      "tp": 173,
+      "fp": 0,
+      "tn": 66,
+      "fn": 134,
+      "precision": 1.0,
+      "recall": 0.564,
+      "f1": 0.721,
+      "fpr": 0.0,
+      "fnr": 0.436
+    }
+  ],
+  "regression_guard": {
+    "checked_against": "tests/unit/test_scam_regression.py BENIGN_CASES + tests/unit/test_char_detection.py BENIGN_BANK",
+    "n_texts": 12,
+    "min_safe_threshold": 0.483,
+    "false_positives_at_threshold_0": [
+      {
+        "text": "Your password was successfully changed. If you did not make this change, contact support from the ap",
+        "label": "credential_access",
+        "confidence": 0.267
+      },
+      {
+        "text": "To set up MFA, open the authenticator app and scan the QR code shown on your account security page.",
+        "label": "mfa_code_theft",
+        "confidence": 0.483
+      },
+      {
+        "text": "Your account was temporarily locked after several failed sign-in attempts and has now been automatic",
+        "label": "credential_access",
+        "confidence": 0.235
+      }
+    ]
+  },
+  "latency": {
+    "cold_start_encoder_load_s": 12.0,
+    "single_text_encode_p50_ms": 10.92,
+    "single_text_encode_p95_ms": 13.87,
+    "classifier_predict_proba_p50_ms": 0.1021
+  }
+}

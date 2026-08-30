@@ -1,0 +1,66 @@
+{
+  "_comment": "Phase 9 semantic generalization probe. Each pair has a 'known' sentence (phrasing close to what behavioral_signals.py's regexes/RISK_SIGNALS already anchor on) and an 'unseen' sentence expressing the same intent without any of the canonical trigger words (otp/password/mfa/verification/token/code/card/cvv/payment). Not part of any training or the frozen unseen_validation_set -- evaluated separately, reported once under GENERALIZATION. A detector that only pattern-matches vocabulary should score much lower on 'unseen' than 'known'; a detector with real semantic generalization should score close to the same on both.",
+  "purpose": "paraphrase_generalization_probe",
+  "pairs": [
+    {
+      "id": "otp_six_digits",
+      "known": {"text": "Send me the OTP.", "is_scam": true},
+      "unseen": {"text": "Read the six digits currently displayed by your authenticator.", "is_scam": true}
+    },
+    {
+      "id": "password_sign_in_field",
+      "known": {"text": "Send your password.", "is_scam": true},
+      "unseen": {"text": "Tell me what you type into the sign-in field.", "is_scam": true}
+    },
+    {
+      "id": "auth_token_temporary_value",
+      "known": {"text": "Give me the authentication token.", "is_scam": true},
+      "unseen": {"text": "Provide the temporary value associated with the current session.", "is_scam": true}
+    },
+    {
+      "id": "verification_code_number_on_phone",
+      "known": {"text": "Please reply with the verification code sent to your phone.", "is_scam": true},
+      "unseen": {"text": "What number just showed up on your phone a second ago?", "is_scam": true}
+    },
+    {
+      "id": "card_number_digits_on_card",
+      "known": {"text": "Please share your card number and CVV to confirm the refund.", "is_scam": true},
+      "unseen": {"text": "Read out the digits printed on the front and back of the plastic in your wallet.", "is_scam": true}
+    },
+    {
+      "id": "api_key_integration_string",
+      "known": {"text": "Please paste your API key so we can fix the integration.", "is_scam": true},
+      "unseen": {"text": "Drop the long string our system gave you for connecting the integration.", "is_scam": true}
+    },
+    {
+      "id": "session_token_cookie_value",
+      "known": {"text": "Reply with your session token so we can refresh it.", "is_scam": true},
+      "unseen": {"text": "Send over whatever value your browser is holding onto for this login right now.", "is_scam": true}
+    },
+    {
+      "id": "payment_redirect_new_details",
+      "known": {"text": "Please transfer the payment to our new bank account.", "is_scam": true},
+      "unseen": {"text": "Move this month's funds to the updated place we told you about.", "is_scam": true}
+    },
+    {
+      "id": "kyc_verify_account_blocked",
+      "known": {"text": "Complete your KYC verification or your bank account will be blocked.", "is_scam": true},
+      "unseen": {"text": "Finish confirming who you are with the branch, or you won't be able to use your account.", "is_scam": true}
+    },
+    {
+      "id": "invest_guaranteed_returns",
+      "known": {"text": "Guaranteed returns, invest today.", "is_scam": true},
+      "unseen": {"text": "Put your money in now, you literally cannot lose with this one.", "is_scam": true}
+    },
+    {
+      "id": "benign_never_ask_otp",
+      "known": {"text": "We will never ask for your OTP.", "is_scam": false},
+      "unseen": {"text": "Nobody here will ever ask what number your app just showed you.", "is_scam": false}
+    },
+    {
+      "id": "benign_password_change_notice",
+      "known": {"text": "Your password was changed successfully.", "is_scam": false},
+      "unseen": {"text": "Whatever you type in to sign in was updated fine on our end.", "is_scam": false}
+    }
+  ]
+}

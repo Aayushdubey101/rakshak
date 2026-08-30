@@ -1,0 +1,40 @@
+{
+  "_comment": "Rakshak evaluation set v2. v1 (15 examples) was the same set tests/unit/test_char_detection.py already characterizes -- see docs/ml/phase8-evaluation.md for why a 1.0/1.0/1.0 score on that set was not evidence of generalization. v2 adds the credential/MFA social-engineering cases from a detection audit (tests/unit/test_scam_regression.py's MALICIOUS_CASES/BENIGN_CASES) that v1 had zero coverage of at all -- the exact gap that produced a false negative on a plain 'reply with the verification code' message. Expand this file, don't edit test_char_detection.py's copy to match -- they serve different purposes (this is evaluation data; that is behavior-pinning).",
+  "version": 2,
+  "examples": [
+    {"text": "Congratulations! You won 25 lakh in KBC lottery. Pay processing fee to claim your prize now.", "is_scam": true, "category": "lottery"},
+    {"text": "Dear customer your SBI account is blocked. Complete KYC verification immediately or account will be closed.", "is_scam": true, "category": "bank_fraud"},
+    {"text": "Send Rs 5000 to scammer@okaxis right now to release your refund", "is_scam": true, "category": "upi_fraud"},
+    {"text": "Work from home data entry job. Salary 25000 per month. Pay registration fee of Rs 500 to start.", "is_scam": true, "category": "job_scam"},
+    {"text": "Your account is suspended. Click here to verify: http://sbi-verify-login.xyz/update", "is_scam": true, "category": "phishing"},
+    {"text": "Guaranteed returns 1000% in crypto trading. Invest now, limited time offer. Double your money!", "is_scam": true, "category": "investment_scam"},
+    {"text": "hello dear i am lonely and i love you, i miss you so much, can you send photo", "is_scam": true, "category": "romance_scam"},
+    {"text": "Your parcel is on hold at customs. Pay delivery charge of Rs 250 to release the consignment.", "is_scam": true, "category": "delivery_scam"},
+    {"text": "URGENT: Share your OTP now to verify your account or it will be suspended immediately", "is_scam": true, "category": "otp_fraud"},
+    {"text": "Bitcoin mining opportunity! Guaranteed returns with binance. Invest today and profit 1000%.", "is_scam": true, "category": "crypto_scam"},
+    {"text": "hey how are you doing today", "is_scam": false, "category": "greeting"},
+    {"text": "Let us meet at the cafe around 6 in the evening", "is_scam": false, "category": "meeting"},
+    {"text": "Mom asked me to buy vegetables on the way home", "is_scam": false, "category": "family"},
+    {"text": "The deployment finished and the tests are green", "is_scam": false, "category": "work"},
+    {"text": "It is raining heavily here since morning", "is_scam": false, "category": "weather"},
+
+    {"text": "Please send your password now so we can verify your account.", "is_scam": true, "category": "credential_access"},
+    {"text": "The access review is almost complete. One service account is still failing reconciliation. Please provide the temporary authentication value currently associated with that account so we can verify the synchronization without resetting anything.", "is_scam": true, "category": "credential_access"},
+    {"text": "We’re cleaning up inactive sessions before tonight’s maintenance window. Your workstation appears to have an orphaned authentication session. Reply with the current verification code so we can associate the session with your employee profile.", "is_scam": true, "category": "mfa_code_theft"},
+    {"text": "Our monitoring integration broke. Please paste your API key here so we can reconnect it.", "is_scam": true, "category": "credential_access"},
+    {"text": "Your session looks stale. Reply with your session token so we can refresh it.", "is_scam": true, "category": "credential_access"},
+    {"text": "This is IT support. We need you to confirm your login details to finish today's patch rollout.", "is_scam": true, "category": "credential_access"},
+    {"text": "Security team here -- as part of this week's access review, please share your current password.", "is_scam": true, "category": "credential_access"},
+    {"text": "This is the CEO, I'm in a meeting and need you to send the gift card codes immediately, don't tell anyone.", "is_scam": true, "category": "executive_impersonation"},
+    {"text": "Our bank details have changed, please send the payment to the new account immediately.", "is_scam": true, "category": "payment_fraud"},
+    {"text": "Please review the attached document at http://192.168.10.5/document for your records.", "is_scam": true, "category": "phishing"},
+
+    {"text": "Reminder: our staff will never ask you to share your password or OTP over phone or email. Do not send these to anyone.", "is_scam": false, "category": "security_notice"},
+    {"text": "Your password was successfully changed. If you did not make this change, contact support from the app.", "is_scam": false, "category": "password_reset_notification"},
+    {"text": "The TLS certificate for api.internal.example.com expires in 14 days. Renewal is scheduled automatically; no action is required.", "is_scam": false, "category": "cert_expiration_notice"},
+    {"text": "Scheduled maintenance is planned for Saturday 2am-4am. Some internal tools may be briefly unavailable.", "is_scam": false, "category": "it_maintenance_announcement"},
+    {"text": "To set up MFA, open the authenticator app and scan the QR code shown on your account security page.", "is_scam": false, "category": "mfa_documentation"},
+    {"text": "The quarterly access audit is complete. No action is required from your team.", "is_scam": false, "category": "audit_message"},
+    {"text": "Your account was temporarily locked after several failed sign-in attempts and has now been automatically unlocked.", "is_scam": false, "category": "account_lock_notification"}
+  ]
+}

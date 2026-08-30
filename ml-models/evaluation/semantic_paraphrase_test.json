@@ -1,0 +1,781 @@
+{
+  "_comment": "Phase 10 item 10: larger semantic paraphrase test (>=100 examples). mfa_verification_intent/credential_intent mix known phrasing (canonical trigger words) with paraphrases that avoid them entirely. benign_security_context mentions the same vocabulary while explicitly NOT requesting the secret (warnings/policy/confirmations) -- the distinguishing test this file targets: requesting a secret vs. discussing why secrets must not be shared. benign_other is unrelated everyday text, for baseline FPR breadth. Not used for training or threshold selection.",
+  "purpose": "semantic_paraphrase_test",
+  "categories": [
+    "mfa_verification_intent",
+    "credential_intent",
+    "benign_security_context",
+    "benign_other"
+  ],
+  "examples": [
+    {
+      "text": "Send me the verification code.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Tell me the verification code so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "I need the verification code to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Read the OTP out loud.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Please share the OTP with me now.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Forward the OTP to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "What is the MFA code?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Can you type the MFA code here?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Reply with the MFA code right away.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Tell me the one-time password so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "I need the one-time password to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Give me the one-time password, quickly.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Please share the six digits displayed on your phone with me now.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the six digits displayed on your phone to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the six digits displayed on your phone.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the number that appeared after the authentication challenge here?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the number that appeared after the authentication challenge right away.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the number that appeared after the authentication challenge out loud.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need the temporary value shown by the authenticator to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the temporary value shown by the authenticator, quickly.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the temporary value shown by the authenticator?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the number generated during sign-in to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the number generated during sign-in.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me the number generated during sign-in so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the code your banking app just displayed right away.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the code your banking app just displayed out loud.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the code your banking app just displayed with me now.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the digits currently on your screen, quickly.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the digits currently on your screen?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the digits currently on your screen here?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the value the app generated a moment ago.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me the value the app generated a moment ago so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need the value the app generated a moment ago to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the number your device is showing right now out loud.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the number your device is showing right now with me now.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the number your device is showing right now to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the one-time value from your authenticator app?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the one-time value from your authenticator app here?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the one-time value from your authenticator app right away.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me whatever number just popped up after you logged in so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need whatever number just popped up after you logged in to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me whatever number just popped up after you logged in, quickly.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the passcode your phone just buzzed with with me now.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the passcode your phone just buzzed with to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the passcode your phone just buzzed with.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the short code that flashed on your lock screen here?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the short code that flashed on your lock screen right away.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the short code that flashed on your lock screen out loud.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need the sign-in number your authenticator just refreshed to complete the process.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the sign-in number your authenticator just refreshed, quickly.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the sign-in number your authenticator just refreshed?",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the digits your bank just texted over to this number.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the digits your bank just texted over.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me the digits your bank just texted over so I can verify your identity.",
+      "is_scam": true,
+      "category": "mfa_verification_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read your password out loud.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Can you type your password here?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Reply with your password right away.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "What is what you enter to sign in?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need what you enter to sign in to complete the process.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me what you enter to sign in, quickly.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me the secret used to authenticate so I can verify your identity.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward the secret used to authenticate to this number.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me the secret used to authenticate.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the credential associated with the account with me now.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the credential associated with the account right away.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the credential associated with the account out loud.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the value you normally use to access the workstation here?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the value you normally use to access the workstation, quickly.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the value you normally use to access the workstation?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need your login details to complete the process.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Send me your login details.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Tell me your login details so I can verify your identity.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": true
+    },
+    {
+      "text": "Forward the passphrase you use every day to this number.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the passphrase you use every day out loud.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the passphrase you use every day with me now.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with whatever you type into the sign-in box right away.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is whatever you type into the sign-in box?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type whatever you type into the sign-in box here?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the string you use to unlock your account, quickly.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me the string you use to unlock your account so I can verify your identity.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need the string you use to unlock your account to complete the process.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me your account secret.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share your account secret with me now.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward your account secret to this number.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the thing you type in right before you get into your inbox out loud.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the thing you type in right before you get into your inbox here?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the thing you type in right before you get into your inbox right away.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the word or phrase that unlocks your account?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "I need the word or phrase that unlocks your account to complete the process.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the word or phrase that unlocks your account, quickly.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Tell me whatever you use to prove it's really you logging in so I can verify your identity.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Forward whatever you use to prove it's really you logging in to this number.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Send me whatever you use to prove it's really you logging in.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Please share the private phrase tied to your profile with me now.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Reply with the private phrase tied to your profile right away.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Read the private phrase tied to your profile out loud.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Can you type the entry code your account was set up with here?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Give me the entry code your account was set up with, quickly.",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "What is the entry code your account was set up with?",
+      "is_scam": true,
+      "category": "credential_intent",
+      "known_phrasing": false
+    },
+    {
+      "text": "Never share your verification code with support.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Security policy prohibits sharing authentication values.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Confirm whether the MFA prompt appeared, but do not provide the code.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "The security team will never ask for your password.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Please don't tell anyone your OTP, even if they claim to be from the bank.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "We will never call and ask for your six-digit code.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "IT will never request your login credentials over phone or email.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Do not share the number displayed on your authenticator app with anyone.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Reminder: support staff cannot see or ask for your password.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "If someone asks for your verification code, it's a scam -- hang up.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Your MFA enrollment is complete; no action needed on your part.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Please confirm that the authentication prompt appeared on your device.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Two-factor authentication is now mandatory for all employees.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "I reset my own password this morning without any issue.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Nice work on the demo, the stakeholders seemed impressed.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Our helpdesk will never ask you to read out your one-time code.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Just a heads-up: authenticator codes should never be shared, even with IT.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "You do not need to give anyone your password to reset it yourself.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "The bank confirmed they never request OTPs by phone.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Training reminder: report anyone who asks for your credentials.",
+      "is_scam": false,
+      "category": "benign_security_context"
+    },
+    {
+      "text": "Standup got pushed to 4pm, same room as always.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Can you send over the slide deck before tomorrow's call?",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Lunch is in the break room if anyone's hungry.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "The quarterly report is due next Friday.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Thanks for covering my shift yesterday.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Let's sync up about the roadmap sometime this week.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "The printer on the third floor is out of toner again.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Happy birthday! Hope you have a great day.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "The new office chairs arrived this morning.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Traffic was terrible on the way in today.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Can we push the standup to 9:30 instead of 9?",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Feedback on the mockups from the client was positive overall.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Reminder to submit your timesheet by end of day.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "The coffee machine is finally fixed.",
+      "is_scam": false,
+      "category": "benign_other"
+    },
+    {
+      "text": "Great weather for the team outing this weekend.",
+      "is_scam": false,
+      "category": "benign_other"
+    }
+  ]
+}
