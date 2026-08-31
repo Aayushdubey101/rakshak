@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync --all-extras --dev
+      - run: uv run ruff check apps packages tests
+      - run: uv run mypy apps packages
+        continue-on-error: true  # not yet a hard gate -- pre-existing typing gaps
+      - run: uv run pytest --cov --cov-fail-under=80
+        env:
+          API_SECRET_KEY: ci-test-secret
+          DEPLOYMENT_MODE: lite
+          HF_LITE_MODE: "true"
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync --dev
+      - run: uv run bandit -c pyproject.toml -r apps packages
+      - run: uv run pip-audit
+      - run: uv run pytest tests/security -q
+        env:
+          API_SECRET_KEY: ci-test-secret
+          DEPLOYMENT_MODE: lite
+          HF_LITE_MODE: "true"
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build api image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.api
+          push: false
+          build-args: |
+            INSTALL_ML=false
+            INSTALL_SEMANTIC=false
+          tags: rakshak-api:ci
+      - name: Build worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.worker
+          push: false
+          build-args: INSTALL_ML=false
+          tags: rakshak-worker:ci
