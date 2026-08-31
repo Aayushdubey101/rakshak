@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 280" width="1000" height="280" font-family="'Archivo','Segoe UI',system-ui,-apple-system,sans-serif">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ec3013" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#ec3013" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="scan" gradientUnits="userSpaceOnUse" x1="160" y1="140" x2="160" y2="25">
+      <stop offset="0" stop-color="#ec3013" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ec3013" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- outer ring: 6 badges evenly 60 deg apart, slow forward spin -->
+  <g>
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+      from="0 160 140" to="360 160 140" dur="46s" repeatCount="indefinite"/>
+    <circle cx="160" cy="140" r="118" fill="none" stroke="#9b9797" stroke-opacity="0.45"/>
+    <circle cx="160" cy="22"  r="8" fill="#ae1800"/>
+    <circle cx="262.2" cy="81"  r="8" fill="#7d7979"/>
+    <circle cx="262.2" cy="199" r="8" fill="#7d7979"/>
+    <circle cx="160" cy="258" r="8" fill="#ae1800"/>
+    <circle cx="57.8" cy="199" r="8" fill="#7d7979"/>
+    <circle cx="57.8" cy="81"  r="8" fill="#7d7979"/>
+  </g>
+
+  <!-- inner dashed ring: 5 nodes, slow reverse spin -->
+  <g>
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+      from="0 160 140" to="-360 160 140" dur="60s" repeatCount="indefinite"/>
+    <circle cx="160" cy="140" r="68" fill="none" stroke="#bab6b6" stroke-opacity="0.6" stroke-dasharray="3 6"/>
+    <circle cx="160"   cy="72"  r="4" fill="#ae1800" fill-opacity="0.75"/>
+    <circle cx="224.7" cy="119" r="4" fill="#ae1800" fill-opacity="0.75"/>
+    <circle cx="200"   cy="195" r="4" fill="#ae1800" fill-opacity="0.75"/>
+    <circle cx="120"   cy="195" r="4" fill="#ae1800" fill-opacity="0.75"/>
+    <circle cx="95.3"  cy="119" r="4" fill="#ae1800" fill-opacity="0.75"/>
+  </g>
+
+  <!-- scan sweep -->
+  <g>
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+      from="0 160 140" to="360 160 140" dur="14s" repeatCount="indefinite"/>
+    <line x1="160" y1="140" x2="160" y2="25" stroke="url(#scan)" stroke-width="2"/>
+  </g>
+
+  <!-- core -->
+  <circle cx="160" cy="140" r="46" fill="url(#glow)">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="160" cy="140" r="50" fill="#f6f4f2"/>
+  <g transform="translate(160 140) scale(0.62) translate(-60 -60)">
+    <path d="M60 8 L104 24 V58 C104 86 86 106 60 114 C34 106 16 86 16 58 V24 Z" fill="#ae1800"/>
+    <path d="M60 8 L104 24 V58 C104 86 86 106 60 114 C34 106 16 86 16 58 V24 Z" fill="none" stroke="#7c1405" stroke-width="2"/>
+    <path d="M42 30 L42 74 L60 88 L60 44 Z" fill="#ec3013"/>
+    <path d="M60 20 C54 34 50 44 58 58 C52 56 47 50 47 42 C41 52 44 66 54 74 C48 74 46 80 50 88 L60 96 L70 88 C74 80 72 74 66 74 C76 66 79 52 73 42 C73 50 68 56 62 58 C70 44 66 34 60 20 Z" fill="#2d2b2b"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="344" y="150" font-size="62" font-weight="800" letter-spacing="7" fill="#ae1800">RAKSHAK</text>
+  <text x="346" y="182" font-size="14" font-weight="700" letter-spacing="7.5" fill="#9b9797">YOUR DIGITAL GUARDIAN</text>
+  <text x="346" y="224" font-size="19" fill="#7d7979">Agentic honeypot &#183; AI + ML scam detection</text>
+</svg>
