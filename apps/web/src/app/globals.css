@@ -1,0 +1,171 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-archivo);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: var(--radius);
+}
+
+/*
+  Rakshak design tokens — ported from the claude.ai/design "Modernist" system
+  (project 82bc2623, _ds/modernist-7be6762c…/styles.css). Values kept as the
+  original hex/color-mix so this stays a straight port, not a re-derivation.
+*/
+:root {
+  --rk-neutral-100: #f8f4f4;
+  --rk-neutral-200: #eae7e7;
+  --rk-neutral-300: #d7d3d3;
+  --rk-neutral-400: #bab6b6;
+  --rk-neutral-500: #9b9797;
+  --rk-neutral-600: #7d7979;
+  --rk-neutral-700: #605d5d;
+  --rk-neutral-800: #444141;
+  --rk-neutral-900: #2d2b2b;
+
+  --rk-accent-100: #fff2ef;
+  --rk-accent-200: #ffe0d9;
+  --rk-accent-300: #ffc4b8;
+  --rk-accent-400: #ff9783;
+  --rk-accent-500: #ff563c;
+  --rk-accent-600: #dd2b0f;
+  --rk-accent-700: #ae1800;
+  --rk-accent-800: #7c1405;
+  --rk-accent-900: #4d170e;
+
+  --rk-accent-2-100: #fff2ef;
+  --rk-accent-2-200: #ffe0da;
+  --rk-accent-2-800: #71261b;
+
+  --rk-divider: color-mix(in srgb, #201e1d 40%, transparent);
+
+  --background: #f3f2f2;
+  --foreground: #201e1d;
+  --card: #eae9e9;
+  --card-foreground: #201e1d;
+  --popover: #eae9e9;
+  --popover-foreground: #201e1d;
+  --primary: #ec3013;
+  --primary-foreground: #f3f2f2;
+  --secondary: var(--rk-neutral-200);
+  --secondary-foreground: #201e1d;
+  --muted: var(--rk-neutral-100);
+  --muted-foreground: color-mix(in srgb, #201e1d 55%, transparent);
+  --accent: var(--rk-accent-100);
+  --accent-foreground: var(--rk-accent-800);
+  --destructive: var(--rk-accent-700);
+  --destructive-foreground: var(--rk-neutral-100);
+  --border: var(--rk-divider);
+  --input: var(--rk-divider);
+  --ring: #ec3013;
+  --chart-1: var(--rk-accent-500);
+  --chart-2: var(--rk-accent-700);
+  --chart-3: var(--rk-neutral-600);
+  --chart-4: var(--rk-neutral-800);
+  --chart-5: var(--rk-accent-900);
+  --radius: 0rem;
+  --sidebar: #eae9e9;
+  --sidebar-foreground: #201e1d;
+  --sidebar-primary: #ec3013;
+  --sidebar-primary-foreground: #f3f2f2;
+  --sidebar-accent: var(--rk-neutral-200);
+  --sidebar-accent-foreground: #201e1d;
+  --sidebar-border: var(--rk-divider);
+  --sidebar-ring: #ec3013;
+
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+}
+
+/* Modernist has no authored dark palette — this system is light-only by design. */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-archivo);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.5rem;
+  }
+  h1 { font-size: 42px; }
+  h2 { font-size: 32px; }
+  h3 { font-size: 25px; }
+  h4 { font-size: 20px; }
+  h5 { font-size: 16px; }
+  h6 {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+@layer utilities {
+  .text-muted-rk {
+    color: color-mix(in srgb, var(--foreground) 55%, transparent);
+  }
+  .elev-sm { box-shadow: var(--shadow-sm); }
+  .elev-md { box-shadow: var(--shadow-md); }
+  .elev-lg { box-shadow: var(--shadow-lg); }
+}
+
+@keyframes rk-spin { to { transform: rotate(360deg); } }
+@keyframes rk-spin-rev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes rk-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes rk-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes rk-breathe { 0%, 100% { transform: scale(1); opacity: 0.45; } 50% { transform: scale(1.14); opacity: 0.85; } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
